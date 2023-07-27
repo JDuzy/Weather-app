@@ -1,0 +1,12 @@
+package com.example.weatherapp.data.remote.dtos
+
+import com.squareup.moshi.Json
+
+data class CurrentWeatherResponseDto(
+    @field:Json(name = "weather")
+    val weatherDto: WeatherDto,
+    @field:Json(name = "main")
+    val mainDto: MainDto,
+    @field:Json(name = "wind")
+    val windDto: WindDto
+)
