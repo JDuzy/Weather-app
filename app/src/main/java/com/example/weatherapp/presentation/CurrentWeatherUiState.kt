@@ -8,7 +8,7 @@ sealed class CurrentWeatherUiState {
 
     data class Success (
         val currentWeatherModel: CurrentWeatherModel
-    )
+    ): CurrentWeatherUiState()
 
     object Error : CurrentWeatherUiState()
 
