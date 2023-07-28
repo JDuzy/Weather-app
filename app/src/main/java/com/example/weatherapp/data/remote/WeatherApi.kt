@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface WeatherApi {
 
-    @GET("https://api.openweathermap.org/data/2.5/weather?")
+    @GET()
     suspend fun getWeather(
         @Query("lat") lat: Double,
         @Query("lon") long: Double,

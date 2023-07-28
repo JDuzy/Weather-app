@@ -2,6 +2,8 @@ package com.example.weatherapp.presentation
 
 import android.location.Location
 import androidx.lifecycle.ViewModel
+import com.example.weatherapp.domain.location.LocationTracker
+import com.example.weatherapp.domain.repository.CurrentWeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +13,8 @@ import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class CurrentWeatherViewModel @Inject constructor(
+    private val currentWeatherRepository: CurrentWeatherRepository,
+    private val locationTracker: LocationTracker
 ): ViewModel() {
 
     private val _currentWeatherSate = MutableStateFlow(CurrentWeatherUiState.Loading)
