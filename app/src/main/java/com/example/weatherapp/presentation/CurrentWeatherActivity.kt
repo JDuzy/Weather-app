@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.example.weatherapp.core.theme.WeatherAppTheme
+import com.example.weatherapp.presentation.view.CurrentWeatherScreen
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -66,12 +67,7 @@ class CurrentWeatherActivity : ComponentActivity() {
         )
         setContent {
             WeatherAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                }
+                CurrentWeatherScreen(viewModel = viewModel)
             }
         }
     }

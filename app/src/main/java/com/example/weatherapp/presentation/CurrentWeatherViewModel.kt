@@ -3,10 +3,13 @@ package com.example.weatherapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.Resource
-import com.example.weatherapp.domain.model.CityModel
-import com.example.weatherapp.domain.usecase.GetCitiesToShowUseCase
+import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
+import com.example.weatherapp.domain.usecase.GetWeatherMeasurableLocationsToShowUseCase
 import com.example.weatherapp.domain.usecase.GetCurrentLocationUseCase
 import com.example.weatherapp.domain.usecase.GetCurrentWeatherUseCase
+import com.example.weatherapp.presentation.state.CurrentWeatherUiState
+import com.example.weatherapp.presentation.state.LocationPermissionUiState
+import com.example.weatherapp.presentation.state.LocationSelectorUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +21,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CurrentWeatherViewModel @Inject constructor(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
-    private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
-    private val getCitiesToShowUseCase: GetCitiesToShowUseCase
+    private val getWeatherMeasurableLocationsToShow: GetWeatherMeasurableLocationsToShowUseCase
 ) : ViewModel() {
 
     private val _currentWeatherSate: MutableStateFlow<CurrentWeatherUiState> =
@@ -30,8 +32,13 @@ class CurrentWeatherViewModel @Inject constructor(
         MutableStateFlow(LocationPermissionUiState())
     val locationPermissionState = _locationPermissionState.asStateFlow()
 
-    private val _citiesToShow = MutableStateFlow(getCitiesToShowUseCase())
-    val citiesToShow: StateFlow<List<CityModel>> = _citiesToShow.asStateFlow()
+    private val _locationSelectorUiState = MutableStateFlow(
+        LocationSelectorUiState(
+            locations = getWeatherMeasurableLocationsToShow(),
+            selectedLocation = getWeatherMeasurableLocationsToShow().last()
+        )
+    )
+    val locationSelectorUiState = _locationSelectorUiState.asStateFlow()
 
     fun setLocationPermission(wasGranted: Boolean, shouldRequest: Boolean) {
         _locationPermissionState.update {
@@ -48,8 +55,38 @@ class CurrentWeatherViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentWeatherFor(cityModel: CityModel) = viewModelScope.launch {
-        when (val resource = getCurrentWeatherUseCase(cityModel.location.lat, cityModel.location.lon)) {
+    fun selectLocation(
+        weatherMeasurableLocation: WeatherMeasurableLocationModel
+    ) {
+        viewModelScope.launch {
+            _currentWeatherSate.update {
+                CurrentWeatherUiState.Loading
+            }
+
+            _locationSelectorUiState.update {
+                it.copy(
+                    isExpanded = false,
+                    selectedLocation = weatherMeasurableLocation
+                )
+            }
+            val locations = getWeatherMeasurableLocationsToShow().toMutableList()
+
+            locations.remove(weatherMeasurableLocation)
+            locations.add(0, weatherMeasurableLocation) // TODO this logic to a usecase?
+
+            _locationSelectorUiState.update {
+                it.copy(
+                    locations = locations
+                )
+            }
+            getCurrentWeatherFor(weatherMeasurableLocation)
+        }
+    }
+
+    private suspend fun getCurrentWeatherFor(weatherMeasurableLocation: WeatherMeasurableLocationModel) {
+        when (
+            val resource =
+                getCurrentWeatherUseCase(weatherMeasurableLocation)) {
             is Resource.Success -> {
                 _currentWeatherSate.update {
                     resource.data?.let { currentWeatherModel ->
@@ -57,27 +94,14 @@ class CurrentWeatherViewModel @Inject constructor(
                     } ?: CurrentWeatherUiState.Error
                 }
             }
+
             is Resource.Error -> {
                 _currentWeatherSate.update { CurrentWeatherUiState.Error }
             }
         }
     }
 
-    fun getActualLocationCurrentWeather() = viewModelScope.launch {
-        val location = getCurrentLocationUseCase()
-        _currentWeatherSate.update {
-            location?.let {
-                when(val resource = getCurrentWeatherUseCase(location.lat, location.lon)) {
-                    is Resource.Success -> {
-                        resource.data?.let { currentWeatherModel ->
-                            CurrentWeatherUiState.Success(currentWeatherModel)
-                        } ?: CurrentWeatherUiState.Error
-                    }
-                    is Resource.Error -> {
-                        CurrentWeatherUiState.Error
-                    }
-                }
-            } ?: CurrentWeatherUiState.Error
-        }
+    fun expandLocationSelector() {
+        _locationSelectorUiState.update { it.copy(isExpanded = true) }
     }
 }
