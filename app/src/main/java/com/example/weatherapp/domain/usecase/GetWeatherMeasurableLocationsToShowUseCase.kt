@@ -14,19 +14,19 @@ class GetWeatherMeasurableLocationsToShowUseCase @Inject constructor() {
             ),
             WeatherMeasurableLocationModel(
                 "Montevideo",
-                location = LocationModel(22.2, 22.2)
+                location = LocationModel(-34.903, -56.188)
             ),
             WeatherMeasurableLocationModel(
                 "Londres",
-                location = LocationModel(22.2, 22.2)
+                location = LocationModel(  51.512, -0.091)
             ),
             WeatherMeasurableLocationModel(
                 "San Pablo",
-                location = LocationModel(22.2, 22.2)
+                location = LocationModel(-23.682, -46.716)
             ),
             WeatherMeasurableLocationModel(
                 "Buenos aires",
-                location = LocationModel(22.2, 22.2)
+                location = LocationModel(-34.613, -58.377)
             )
         )
 }

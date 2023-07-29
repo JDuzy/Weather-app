@@ -3,14 +3,12 @@ package com.example.weatherapp.presentation.view
 import android.content.res.Configuration
 import androidx.annotation.RawRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,10 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +46,7 @@ import com.example.weatherapp.presentation.CurrentWeatherViewModel
 import com.example.weatherapp.presentation.state.CurrentWeatherUiState
 import com.example.weatherapp.presentation.state.LocationPermissionUiState
 import com.example.weatherapp.presentation.state.LocationSelectorUiState
+import com.example.weatherapp.presentation.utils.toRawRes
 
 @Composable
 internal fun CurrentWeatherScreen(
@@ -173,11 +169,11 @@ private fun CityLocationContent(currentWeatherSate: CurrentWeatherUiState) {
 private fun CurrentWeatherContent(currentWeatherSate: CurrentWeatherUiState) {
     when (currentWeatherSate) {
         is CurrentWeatherUiState.Loading -> {
-            CircularProgressIndicator()
+            LoadingCurrentWeatherContent()
         }
 
         is CurrentWeatherUiState.Error -> {
-            Text("Error")
+            ErrorFetchingWeatherContent()
         }
 
         is CurrentWeatherUiState.Success -> {
@@ -189,6 +185,26 @@ private fun CurrentWeatherContent(currentWeatherSate: CurrentWeatherUiState) {
 }
 
 @Composable
+private fun LoadingCurrentWeatherContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+@Composable
+private fun ErrorFetchingWeatherContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        ErrorDescription(stringId = R.string.current_weather_location_error_description)
+    }
+}
+@Composable
 private fun CurrentWeatherSuccessContent(
     currentWeatherSate: CurrentWeatherUiState.Success,
 ) {
@@ -198,7 +214,11 @@ private fun CurrentWeatherSuccessContent(
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(modifier = Modifier.height(24.dp))
-        WeatherLottie(R.raw.broken_clouds)
+        WeatherLottie(
+            currentWeatherSate.currentWeatherModel.iconId?.let {
+                it.toRawRes()
+            } ?: "".toRawRes()
+        )
         MainTemp(
             currentWeatherModel = currentWeatherSate.currentWeatherModel
         )
