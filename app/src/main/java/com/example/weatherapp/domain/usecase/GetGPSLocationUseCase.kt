@@ -6,6 +6,5 @@ import javax.inject.Inject
 class GetGPSLocationUseCase @Inject constructor(
     private val locationTracker: LocationTracker
 ) {
-
     suspend operator fun invoke() = locationTracker.getCurrentLocation()
 }

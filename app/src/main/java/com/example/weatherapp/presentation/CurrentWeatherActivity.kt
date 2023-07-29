@@ -23,6 +23,7 @@ class CurrentWeatherActivity : ComponentActivity() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.setLocationEnabled(true)
+            viewModel.getGpsLocationCurrentWeather()
         } else {
             viewModel.setLocationEnabled(false)
         }
@@ -48,7 +49,10 @@ class CurrentWeatherActivity : ComponentActivity() {
         createLocationRequest(
             activity = this,
             locationRequestLauncher = locationRequestLauncher,
-            onLocationRequestSuccessful = { viewModel.setLocationEnabled(true) }
+            onLocationRequestSuccessful = {
+                viewModel.setLocationEnabled(true)
+                viewModel.getGpsLocationCurrentWeather()
+            }
         )
         setContent {
             WeatherAppTheme {

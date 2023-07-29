@@ -12,8 +12,8 @@ fun CurrentWeatherResponseDto.toCurrentWeatherModel() = CurrentWeatherModel(
         maxTemp = this.mainDto.maxTemp,
         minTemp = this.mainDto.minTemp,
     ),
-    description = this.weatherDto.description,
-    iconId = this.weatherDto.iconId,
+    description = this.weatherDtos.firstOrNull()?.description,
+    iconId = this.weatherDtos.firstOrNull()?.iconId,
     wind = WindModel(
         speed = this.windDto.speed,
         degree = this.windDto.degree

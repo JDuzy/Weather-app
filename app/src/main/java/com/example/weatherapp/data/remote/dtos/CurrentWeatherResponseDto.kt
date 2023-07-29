@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class CurrentWeatherResponseDto(
     @field:Json(name = "weather")
-    val weatherDto: WeatherDto,
+    val weatherDtos: List<WeatherDto>,
     @field:Json(name = "main")
     val mainDto: MainDto,
     @field:Json(name = "wind")

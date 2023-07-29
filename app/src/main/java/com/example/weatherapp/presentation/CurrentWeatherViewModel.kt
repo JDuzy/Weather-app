@@ -6,6 +6,7 @@ import com.example.weatherapp.domain.Resource
 import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.domain.usecase.GetWeatherMeasurableLocationsToShowUseCase
 import com.example.weatherapp.domain.usecase.GetCurrentWeatherUseCase
+import com.example.weatherapp.domain.usecase.GetGpsMeasurableLocationModelUseCase
 import com.example.weatherapp.presentation.state.CurrentWeatherUiState
 import com.example.weatherapp.presentation.state.LocationPermissionUiState
 import com.example.weatherapp.presentation.state.LocationSelectorUiState
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CurrentWeatherViewModel @Inject constructor(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
-    private val getWeatherMeasurableLocationsToShow: GetWeatherMeasurableLocationsToShowUseCase
+    private val getWeatherMeasurableLocationsToShow: GetWeatherMeasurableLocationsToShowUseCase,
+    private val getGpsMeasurableLocationModel: GetGpsMeasurableLocationModelUseCase
 ) : ViewModel() {
 
     private val _currentWeatherSate: MutableStateFlow<CurrentWeatherUiState> =
@@ -34,7 +36,7 @@ class CurrentWeatherViewModel @Inject constructor(
     private val _locationSelectorUiState = MutableStateFlow(
         LocationSelectorUiState(
             locations = getWeatherMeasurableLocationsToShow(),
-            selectedLocation = getWeatherMeasurableLocationsToShow().first()
+            selectedLocation = getGpsMeasurableLocationModel()
         )
     )
     val locationSelectorUiState = _locationSelectorUiState.asStateFlow()
@@ -54,6 +56,15 @@ class CurrentWeatherViewModel @Inject constructor(
         }
     }
 
+
+    fun getGpsLocationCurrentWeather() {
+        viewModelScope.launch {
+            _currentWeatherSate.update {
+                CurrentWeatherUiState.Loading
+            }
+            getCurrentWeatherFor(getGpsMeasurableLocationModel())
+        }
+    }
     fun selectLocation(
         weatherMeasurableLocation: WeatherMeasurableLocationModel
     ) {
