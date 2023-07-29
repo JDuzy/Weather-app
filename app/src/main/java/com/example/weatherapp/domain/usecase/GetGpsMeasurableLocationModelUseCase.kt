@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetGpsMeasurableLocationModelUseCase @Inject constructor() {
 
     operator fun invoke() = WeatherMeasurableLocationModel(
-        "Ubicación actual",
+        "Current location",
         location = null,
         isGPSLocation = true
     )

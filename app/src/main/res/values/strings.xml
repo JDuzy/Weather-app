@@ -12,6 +12,7 @@
 
     <!-- Current weather-->
     <string name="current_weather_location_error_description">An error has occurred getting this location weather, you can try again later or with another location.</string>
-    <string name="current_weather_min_max_temperature_text">%1$s min / %2$s max</string>
+    <string name="current_weather_actual_temperature_suffix">%s°</string>
+    <string name="current_weather_min_max_temperature_text">%1$s° min / %2$s° max</string>
     <string name="current_weather_wind_suffix">%s km/h</string>
 </resources>
