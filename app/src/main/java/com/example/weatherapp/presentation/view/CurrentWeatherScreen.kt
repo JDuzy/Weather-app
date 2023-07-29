@@ -7,13 +7,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -213,7 +218,7 @@ private fun CurrentWeatherSuccessContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(48.dp))
         WeatherLottie(
             currentWeatherSate.currentWeatherModel.iconId?.let {
                 it.toRawRes()
@@ -256,7 +261,10 @@ private fun MainTemp(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = currentWeatherModel.temperature.actualTemp.toString(),
+            text = stringResource(
+                id = R.string.current_weather_actual_temperature_suffix,
+                currentWeatherModel.temperature.actualTemp.toString()
+            ),
             fontFamily = poppins,
             fontWeight = FontWeight.SemiBold,
             fontSize = 80.sp,
@@ -273,24 +281,45 @@ private fun MainTemp(
 @Composable
 private fun WeatherInfo(currentWeatherModel: CurrentWeatherModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = stringResource(
-                id = R.string.current_weather_min_max_temperature_text,
-                currentWeatherModel.temperature.minTemp.toString(),
-                currentWeatherModel.temperature.maxTemp.toString()
-            ),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Light
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_thermometer),
+                contentDescription = null,
+                tint = White
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(
+                    id = R.string.current_weather_min_max_temperature_text,
+                    currentWeatherModel.temperature.minTemp.toString(),
+                    currentWeatherModel.temperature.maxTemp.toString()
+                ),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Light
+            )
+        }
+
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(
-                id = R.string.current_weather_wind_suffix,
-                currentWeatherModel.wind.speed.toString()
-            ),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Light
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_wind),
+                contentDescription = null,
+                tint = White
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(
+                    id = R.string.current_weather_wind_suffix,
+                    currentWeatherModel.wind.speed.toString()
+                ),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Light
+            )
+        }
     }
 }
 
@@ -305,9 +334,9 @@ private fun PreviewScreen() {
     val currentWeatherSateSuccess = CurrentWeatherUiState.Success(
         currentWeatherModel = CurrentWeatherModel(
             temperature = TemperatureModel(
-                actualTemp = 20.0,
-                minTemp = 18.0,
-                maxTemp = 22.0
+                actualTemp = 20,
+                minTemp = 18,
+                maxTemp = 22
             ),
             wind = WindModel(speed = 14.0, degree = 23.0),
             description = null,

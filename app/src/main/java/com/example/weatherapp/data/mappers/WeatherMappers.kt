@@ -4,13 +4,14 @@ import com.example.weatherapp.data.remote.dtos.CurrentWeatherResponseDto
 import com.example.weatherapp.domain.model.CurrentWeatherModel
 import com.example.weatherapp.domain.model.TemperatureModel
 import com.example.weatherapp.domain.model.WindModel
+import kotlin.math.roundToInt
 
 fun CurrentWeatherResponseDto.toCurrentWeatherModel() = CurrentWeatherModel(
     temperature = TemperatureModel(
-        actualTemp = this.mainDto.temp,
-        feelsLike = this.mainDto.feelsLike,
-        maxTemp = this.mainDto.maxTemp,
-        minTemp = this.mainDto.minTemp,
+        actualTemp = this.mainDto.temp?.roundToInt(),
+        feelsLike = this.mainDto.feelsLike?.roundToInt(),
+        maxTemp = this.mainDto.maxTemp?.roundToInt(),
+        minTemp = this.mainDto.minTemp?.roundToInt(),
     ),
     description = this.weatherDtos.firstOrNull()?.description,
     iconId = this.weatherDtos.firstOrNull()?.iconId,

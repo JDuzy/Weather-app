@@ -1,8 +1,8 @@
 package com.example.weatherapp.domain.model
 
 data class TemperatureModel(
-    val actualTemp: Double? = null,
-    val feelsLike: Double? = null,
-    val maxTemp: Double? = null,
-    val minTemp: Double? = null
+    val actualTemp: Int? = null,
+    val feelsLike: Int? = null,
+    val maxTemp: Int? = null,
+    val minTemp: Int? = null
 )
