@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Weather app</string>
+    <!-- GPS not enabled -->
+    <string name="gps_not_granted_state_description">In order to see the weather of your current location you need your device GPS location enabled.</string>
+
+    <!-- Permissions denied -->
+    <string name="location_permissions_denied_description">In order to see the weather of your current location you need your device location permissions enabled.</string>
+
+    <!-- Require permissions -->
+    <string name="should_request_location_permissions_description">In order to see the weather of your current location you need your device location permissions enabled.</string>
+    <string name="require_permissions_btn">Require permission</string>
+
+    <!-- Current weather-->
+    <string name="current_weather_location_error_description">An error has occurred getting this location weather, you can try again later or with another location.</string>
+    <string name="current_weather_min_max_temperature_text">%1$s min / %2$s max</string>
+    <string name="current_weather_wind_suffix">%s km/h</string>
 </resources>

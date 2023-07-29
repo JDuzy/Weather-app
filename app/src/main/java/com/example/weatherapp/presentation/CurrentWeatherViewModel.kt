@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.Resource
 import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.domain.usecase.GetWeatherMeasurableLocationsToShowUseCase
-import com.example.weatherapp.domain.usecase.GetCurrentLocationUseCase
 import com.example.weatherapp.domain.usecase.GetCurrentWeatherUseCase
 import com.example.weatherapp.presentation.state.CurrentWeatherUiState
 import com.example.weatherapp.presentation.state.LocationPermissionUiState
@@ -35,7 +34,7 @@ class CurrentWeatherViewModel @Inject constructor(
     private val _locationSelectorUiState = MutableStateFlow(
         LocationSelectorUiState(
             locations = getWeatherMeasurableLocationsToShow(),
-            selectedLocation = getWeatherMeasurableLocationsToShow().last()
+            selectedLocation = getWeatherMeasurableLocationsToShow().first()
         )
     )
     val locationSelectorUiState = _locationSelectorUiState.asStateFlow()
@@ -51,7 +50,7 @@ class CurrentWeatherViewModel @Inject constructor(
 
     fun setLocationEnabled(enabled: Boolean) {
         _locationPermissionState.update {
-            it.copy(isEnabled = enabled)
+            it.copy(isGPSEnabled = enabled)
         }
     }
 
