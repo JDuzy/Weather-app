@@ -1,28 +1,32 @@
 package com.example.weatherapp.domain.usecase
 
-import com.example.weatherapp.domain.model.CityModel
+import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.domain.model.LocationModel
 import javax.inject.Inject
 
-class GetCitiesToShowUseCase @Inject constructor() {
+class GetWeatherMeasurableLocationsToShowUseCase @Inject constructor() {
 
     operator fun invoke() =
         listOf(
-            CityModel(
+            WeatherMeasurableLocationModel(
                 "Montevideo",
                 location = LocationModel(22.2, 22.2)
             ),
-            CityModel(
+            WeatherMeasurableLocationModel(
                 "Londres",
                 location = LocationModel(22.2, 22.2)
             ),
-            CityModel(
+            WeatherMeasurableLocationModel(
                 "San Pablo",
                 location = LocationModel(22.2, 22.2)
             ),
-            CityModel(
+            WeatherMeasurableLocationModel(
                 "Buenos aires",
                 location = LocationModel(22.2, 22.2)
+            ),
+            WeatherMeasurableLocationModel(
+                "Ubicación actual",
+                location = null
             )
         )
 }

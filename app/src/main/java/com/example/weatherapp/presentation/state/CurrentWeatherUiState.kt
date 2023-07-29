@@ -1,4 +1,4 @@
-package com.example.weatherapp.presentation
+package com.example.weatherapp.presentation.state
 
 import com.example.weatherapp.domain.model.CurrentWeatherModel
 

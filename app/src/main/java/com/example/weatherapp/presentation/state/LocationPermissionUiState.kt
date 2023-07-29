@@ -1,4 +1,4 @@
-package com.example.weatherapp.presentation
+package com.example.weatherapp.presentation.state
 
 data class LocationPermissionUiState(
     val wasGranted: Boolean = false,
