@@ -4,14 +4,13 @@ import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.domain.model.LocationModel
 import javax.inject.Inject
 
-class GetWeatherMeasurableLocationsToShowUseCase @Inject constructor() {
+class GetWeatherMeasurableLocationsToShowUseCase @Inject constructor(
+    private val getGpsMeasurableLocationModel: GetGpsMeasurableLocationModelUseCase
+) {
 
     operator fun invoke() =
         listOf(
-            WeatherMeasurableLocationModel(
-                "Ubicación actual",
-                location = null
-            ),
+            getGpsMeasurableLocationModel(),
             WeatherMeasurableLocationModel(
                 "Montevideo",
                 location = LocationModel(-34.903, -56.188)

@@ -19,5 +19,4 @@ class GetCurrentWeatherUseCase @Inject constructor(
                 currentWeatherRepository.getWeather(gpsLoc.lat, long = gpsLoc.lon)
             } ?: Resource.Error("Couldnt find location")
         }
-
 }

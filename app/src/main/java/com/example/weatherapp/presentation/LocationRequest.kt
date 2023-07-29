@@ -1,7 +1,6 @@
 package com.example.weatherapp.presentation
 
 import android.app.Activity
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import com.google.android.gms.common.api.ApiException
@@ -17,8 +16,7 @@ import com.google.android.gms.tasks.Task
 fun createLocationRequest(
     activity: Activity,
     locationRequestLauncher: ActivityResultLauncher<IntentSenderRequest>,
-    onLocationRequestSuccessful: () -> Unit,
-
+    onLocationRequestSuccessful: () -> Unit
 ) {
     val locationRequest = LocationRequest.Builder(30_000L)
         .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
