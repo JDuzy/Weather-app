@@ -9,6 +9,10 @@ class GetWeatherMeasurableLocationsToShowUseCase @Inject constructor() {
     operator fun invoke() =
         listOf(
             WeatherMeasurableLocationModel(
+                "Ubicación actual",
+                location = null
+            ),
+            WeatherMeasurableLocationModel(
                 "Montevideo",
                 location = LocationModel(22.2, 22.2)
             ),
@@ -23,10 +27,6 @@ class GetWeatherMeasurableLocationsToShowUseCase @Inject constructor() {
             WeatherMeasurableLocationModel(
                 "Buenos aires",
                 location = LocationModel(22.2, 22.2)
-            ),
-            WeatherMeasurableLocationModel(
-                "Ubicación actual",
-                location = null
             )
         )
 }

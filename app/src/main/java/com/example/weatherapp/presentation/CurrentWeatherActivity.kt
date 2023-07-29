@@ -67,7 +67,7 @@ class CurrentWeatherActivity : ComponentActivity() {
         )
         setContent {
             WeatherAppTheme {
-                CurrentWeatherScreen(viewModel = viewModel)
+                CurrentWeatherScreen(viewModel = viewModel, onRequestLocationPermission = ::requestLocationPermission)
             }
         }
     }

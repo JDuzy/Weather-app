@@ -26,20 +26,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.weatherapp.core.theme.Grey
 import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.presentation.state.LocationSelectorUiState
 
 @Composable
 internal fun LocationSelector(
+    modifier: Modifier = Modifier,
     locationSelectorState: LocationSelectorUiState,
     onExpandLocationSelector: () -> Unit,
     onSelectLocation: (WeatherMeasurableLocationModel) -> Unit = { _ -> }
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(0.5f)
             .clickable(onClick = onExpandLocationSelector),
-        color = MaterialTheme.colorScheme.surface.copy(0.8f),
+        color = Grey.copy(0.9f),
         contentColor = Color.White,
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 0.dp
