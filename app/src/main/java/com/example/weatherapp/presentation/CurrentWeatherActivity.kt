@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.example.weatherapp.core.theme.WeatherAppTheme
+import com.example.weatherapp.core.theme.rememberWindowSizeClass
 import com.example.weatherapp.presentation.view.CurrentWeatherScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -55,7 +56,8 @@ class CurrentWeatherActivity : ComponentActivity() {
             }
         )
         setContent {
-            WeatherAppTheme {
+            val window = rememberWindowSizeClass()
+            WeatherAppTheme(window) {
                 CurrentWeatherScreen(viewModel = viewModel, onRequestLocationPermission = ::requestLocationPermission)
             }
         }
