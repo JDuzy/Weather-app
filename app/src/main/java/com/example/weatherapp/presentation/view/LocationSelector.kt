@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.weatherapp.core.theme.AppTheme
 import com.example.weatherapp.core.theme.Grey
 import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.presentation.state.LocationSelectorUiState
@@ -51,7 +52,7 @@ internal fun LocationSelector(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FirstLocationRow(
+                LocationRow(
                     location = locationSelectorState.locations.first(),
                     onSelectLocation = onSelectLocation
                 )
@@ -59,6 +60,12 @@ internal fun LocationSelector(
                     fromIndex = 1,
                     toIndex = locationSelectorState.locations.lastIndex + 1
                 )) {
+                    Divider(
+                        Modifier
+                            .height(1.dp)
+                            .padding(horizontal = AppTheme.dimens.small),
+                        color = Color.Black
+                    )
                     LocationRow(location = location, onSelectLocation = onSelectLocation)
                 }
             }
@@ -74,53 +81,15 @@ internal fun LocationSelector(
 }
 
 @Composable
-private fun FirstLocationRow(
-    location: WeatherMeasurableLocationModel,
-    onSelectLocation: (WeatherMeasurableLocationModel) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .clickable { onSelectLocation(location) }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
-    ) {
-        /*Icon(
-            modifier = Modifier.size(20.dp),
-            imageVector = Icons.Default.LocationOn,
-            contentDescription = null,
-            tint = Color.White
-        )*/
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = location.name,
-            style = MaterialTheme.typography.labelMedium
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        /*Icon(
-            modifier = Modifier.size(20.dp),
-            imageVector = Icons.Default.KeyboardArrowUp,
-            contentDescription = null,
-            tint = Color.White
-        )*/
-    }
-}
-
-@Composable
 private fun LocationRow(
     location: WeatherMeasurableLocationModel,
     onSelectLocation: (WeatherMeasurableLocationModel) -> Unit
 ) {
-    Divider(
-        Modifier
-            .height(1.dp)
-            .padding(horizontal = 8.dp),
-        color = Color.Black
-    )
     Row(
         modifier = Modifier
             .clickable { onSelectLocation(location) }
-            .padding(horizontal = 16.dp, vertical = 12.dp
+            .padding(
+                horizontal = AppTheme.dimens.mediumLarge, vertical = AppTheme.dimens.medium
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -138,19 +107,22 @@ internal fun ContractedLocationSelectorContent(
     onExpandLocationSelector: () -> Unit
 ) {
     Row(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier = Modifier.padding(
+            horizontal = AppTheme.dimens.mediumLarge,
+            vertical = AppTheme.dimens.mediumLarge
+        ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(AppTheme.dimens.mediumLarge))
         Text(
             text = location.name,
             style = MaterialTheme.typography.labelMedium
         )
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.weight(1f))
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(AppTheme.dimens.large),
             imageVector = Icons.Default.ArrowDropDown,
             contentDescription = null,
             tint = Color.White

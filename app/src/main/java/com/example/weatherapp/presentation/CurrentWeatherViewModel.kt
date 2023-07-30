@@ -26,7 +26,7 @@ class CurrentWeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _currentWeatherSate: MutableStateFlow<CurrentWeatherUiState> =
-        MutableStateFlow(CurrentWeatherUiState.Loading)
+        MutableStateFlow(CurrentWeatherUiState.FirstTime)
     val currentWeatherSate: StateFlow<CurrentWeatherUiState> = _currentWeatherSate.asStateFlow()
 
     private val _locationPermissionState: MutableStateFlow<LocationPermissionUiState> =
@@ -57,12 +57,17 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
 
-    fun getGpsLocationCurrentWeather() {
+    fun getActualLocationCurrentWeather() {
         viewModelScope.launch {
-            _currentWeatherSate.update {
-                CurrentWeatherUiState.Loading
+            if (
+                _currentWeatherSate.value is CurrentWeatherUiState.FirstTime ||
+                _currentWeatherSate.value is CurrentWeatherUiState.Error
+            ) {
+                _currentWeatherSate.update {
+                    CurrentWeatherUiState.Loading
+                }
+                getCurrentWeatherFor(_locationSelectorUiState.value.selectedLocation)
             }
-            getCurrentWeatherFor(getGpsMeasurableLocationModel())
         }
     }
     fun selectLocation(

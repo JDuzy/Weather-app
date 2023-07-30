@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +41,7 @@ import com.example.weatherapp.R
 import com.example.weatherapp.R.string.should_request_location_permissions_description
 import com.example.weatherapp.core.theme.AppTheme
 import com.example.weatherapp.core.theme.Black
+import com.example.weatherapp.core.theme.Orientation
 import com.example.weatherapp.core.theme.WeatherAppTheme
 import com.example.weatherapp.core.theme.White
 import com.example.weatherapp.core.theme.poppins
@@ -83,6 +85,36 @@ private fun CurrentWeatherScreen(
     onExpandLocationSelector: () -> Unit = {},
     onSelectLocation: (WeatherMeasurableLocationModel) -> Unit = { _ -> }
 ) {
+    //if (AppTheme.orientation == Orientation.Portrait) {
+        PortraitCurrentWeatherLayout(
+            locationPermissionState = locationPermissionState,
+            currentWeatherSate = currentWeatherSate,
+            locationSelectorState = locationSelectorState,
+            onRequestLocationPermission = onRequestLocationPermission,
+            onExpandLocationSelector = onExpandLocationSelector,
+            onSelectLocation = onSelectLocation
+        )
+   /* } else {
+        LandscapeCurrentWeatherLayout(
+            locationPermissionState = locationPermissionState,
+            currentWeatherSate = currentWeatherSate,
+            locationSelectorState = locationSelectorState,
+            onRequestLocationPermission = onRequestLocationPermission,
+            onExpandLocationSelector = onExpandLocationSelector,
+            onSelectLocation = onSelectLocation
+        )
+    }*/
+}
+
+@Composable
+private fun PortraitCurrentWeatherLayout(
+    locationPermissionState: LocationPermissionUiState,
+    currentWeatherSate: CurrentWeatherUiState,
+    locationSelectorState: LocationSelectorUiState,
+    onRequestLocationPermission: () -> Unit = {},
+    onExpandLocationSelector: () -> Unit = {},
+    onSelectLocation: (WeatherMeasurableLocationModel) -> Unit = { _ -> }
+) {
     Box(
         Modifier
             .fillMaxSize()
@@ -107,6 +139,42 @@ private fun CurrentWeatherScreen(
             onExpandLocationSelector = onExpandLocationSelector,
             onSelectLocation = onSelectLocation,
         )
+    }
+}
+
+@Composable
+private fun LandscapeCurrentWeatherLayout(
+    locationPermissionState: LocationPermissionUiState,
+    currentWeatherSate: CurrentWeatherUiState,
+    locationSelectorState: LocationSelectorUiState,
+    onRequestLocationPermission: () -> Unit = {},
+    onExpandLocationSelector: () -> Unit = {},
+    onSelectLocation: (WeatherMeasurableLocationModel) -> Unit = { _ -> }
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Black)
+            .padding(horizontal = AppTheme.dimens.mediumLarge),
+
+    ) {
+        LocationSelector(
+            modifier = Modifier
+                .padding(top = AppTheme.dimens.extraLarge),
+            locationSelectorState = locationSelectorState,
+            onExpandLocationSelector = onExpandLocationSelector,
+            onSelectLocation = onSelectLocation,
+        )
+        if (locationSelectorState.selectedLocation.isGPSLocation) {
+            GPSLocationContent(
+                locationPermissionState = locationPermissionState,
+                currentWeatherSate = currentWeatherSate,
+                onRequestLocationPermission = onRequestLocationPermission
+            )
+        } else {
+            CityLocationContent(currentWeatherSate)
+        }
     }
 }
 
@@ -175,7 +243,7 @@ private fun CityLocationContent(currentWeatherSate: CurrentWeatherUiState) {
 @Composable
 private fun CurrentWeatherContent(currentWeatherSate: CurrentWeatherUiState) {
     when (currentWeatherSate) {
-        is CurrentWeatherUiState.Loading -> {
+        is CurrentWeatherUiState.Loading, CurrentWeatherUiState.FirstTime -> {
             LoadingCurrentWeatherContent()
         }
 
@@ -215,26 +283,47 @@ private fun ErrorFetchingWeatherContent() {
 private fun CurrentWeatherSuccessContent(
     currentWeatherSate: CurrentWeatherUiState.Success,
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Spacer(modifier = Modifier.height(AppTheme.dimens.largeSpace))
-        WeatherLottie(
-            currentWeatherSate.currentWeatherModel.iconId?.let {
-                it.toRawRes()
-            } ?: "".toRawRes()
-        )
-        MainTemp(
-            currentWeatherModel = currentWeatherSate.currentWeatherModel
-        )
-        Spacer(modifier = Modifier.height(AppTheme.dimens.extraLarge))
-        WeatherInfo(
-            currentWeatherModel = currentWeatherSate.currentWeatherModel
-        )
-    }
+    if (AppTheme.orientation == Orientation.Portrait) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Spacer(modifier = Modifier.height(AppTheme.dimens.largeSpace))
+            WeatherLottie(
+                currentWeatherSate.currentWeatherModel.iconId?.let {
+                    it.toRawRes()
+                } ?: "".toRawRes()
+            )
+            MainTemp(
+                currentWeatherModel = currentWeatherSate.currentWeatherModel
+            )
+            Spacer(modifier = Modifier.height(AppTheme.dimens.extraLarge))
+            WeatherInfo(
+                currentWeatherModel = currentWeatherSate.currentWeatherModel
+            )
+        }
+    } else {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            MainTemp(
+                currentWeatherModel = currentWeatherSate.currentWeatherModel
+            )
 
+            WeatherLottie(
+                currentWeatherSate.currentWeatherModel.iconId?.let {
+                    it.toRawRes()
+                } ?: "".toRawRes()
+            )
+            Spacer(modifier = Modifier.width(AppTheme.dimens.extraLarge))
+            WeatherInfo(
+                currentWeatherModel = currentWeatherSate.currentWeatherModel
+            )
+        }
+    }
 }
 
 @Composable
@@ -269,7 +358,7 @@ private fun MainTemp(
             ),
             fontFamily = poppins,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 80.sp,
+            fontSize = AppTheme.dimens.mainTempTextSize,
             color = White
         )
         Text(
@@ -325,7 +414,13 @@ private fun WeatherInfo(currentWeatherModel: CurrentWeatherModel) {
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    device = Devices.AUTOMOTIVE_1024p,
+    widthDp = 720,
+    heightDp = 360
+)
 @Composable
 private fun PreviewScreen() {
     val selectedLocation = WeatherMeasurableLocationModel(

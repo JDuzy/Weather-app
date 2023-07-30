@@ -5,6 +5,7 @@ import com.example.weatherapp.domain.model.CurrentWeatherModel
 sealed class CurrentWeatherUiState {
 
     object Loading : CurrentWeatherUiState()
+    object FirstTime : CurrentWeatherUiState()
 
     data class Success (
         val currentWeatherModel: CurrentWeatherModel

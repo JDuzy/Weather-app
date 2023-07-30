@@ -79,6 +79,7 @@ fun WeatherAppTheme(
         else -> windowSizeClass.height
     }
 
+    println("Size that matters:" + sizeThatMatters)
     val dimensions = when (sizeThatMatters) {
         is WindowSize.Small -> smallDimensions
         is WindowSize.Compact -> compactDimensions
