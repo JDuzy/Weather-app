@@ -38,10 +38,12 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.weatherapp.R
 import com.example.weatherapp.R.string.should_request_location_permissions_description
+import com.example.weatherapp.core.theme.AppTheme
 import com.example.weatherapp.core.theme.Black
 import com.example.weatherapp.core.theme.WeatherAppTheme
 import com.example.weatherapp.core.theme.White
 import com.example.weatherapp.core.theme.poppins
+import com.example.weatherapp.core.theme.rememberWindowSizeClass
 import com.example.weatherapp.domain.model.WeatherMeasurableLocationModel
 import com.example.weatherapp.domain.model.CurrentWeatherModel
 import com.example.weatherapp.domain.model.LocationModel
@@ -85,7 +87,7 @@ private fun CurrentWeatherScreen(
         Modifier
             .fillMaxSize()
             .background(color = Black)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = AppTheme.dimens.mediumLarge)
     ) {
 
         if (locationSelectorState.selectedLocation.isGPSLocation) {
@@ -100,7 +102,7 @@ private fun CurrentWeatherScreen(
         LocationSelector(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 24.dp),
+                .padding(top = AppTheme.dimens.extraLarge),
             locationSelectorState = locationSelectorState,
             onExpandLocationSelector = onExpandLocationSelector,
             onSelectLocation = onSelectLocation,
@@ -133,7 +135,7 @@ private fun RequestForPermissionsContent(onRequestLocationPermission: () -> Unit
         verticalArrangement = Arrangement.Center
     ) {
         ErrorDescription(stringId = should_request_location_permissions_description)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.mediumLarge))
         Button(
             onClick = onRequestLocationPermission
         ) {
@@ -218,7 +220,7 @@ private fun CurrentWeatherSuccessContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.largeSpace))
         WeatherLottie(
             currentWeatherSate.currentWeatherModel.iconId?.let {
                 it.toRawRes()
@@ -227,7 +229,7 @@ private fun CurrentWeatherSuccessContent(
         MainTemp(
             currentWeatherModel = currentWeatherSate.currentWeatherModel
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.extraLarge))
         WeatherInfo(
             currentWeatherModel = currentWeatherSate.currentWeatherModel
         )
@@ -239,7 +241,7 @@ private fun CurrentWeatherSuccessContent(
 fun WeatherLottie(@RawRes rawId: Int) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(rawId))
     LottieAnimation(
-        modifier = Modifier.size(260.dp),
+        modifier = Modifier.size(AppTheme.dimens.lottieSize),
         composition =  composition,
         contentScale = ContentScale.Fit
     )
@@ -248,7 +250,7 @@ fun WeatherLottie(@RawRes rawId: Int) {
 @Composable
 private fun ErrorDescription(@StringRes stringId: Int) {
     Text(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier.padding(horizontal = AppTheme.dimens.mediumLarge),
         text = stringResource(id = stringId),
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center
@@ -289,7 +291,7 @@ private fun WeatherInfo(currentWeatherModel: CurrentWeatherModel) {
                 contentDescription = null,
                 tint = White
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppTheme.dimens.medium))
             Text(
                 text = stringResource(
                     id = R.string.current_weather_min_max_temperature_text,
@@ -301,7 +303,7 @@ private fun WeatherInfo(currentWeatherModel: CurrentWeatherModel) {
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.medium))
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -310,7 +312,7 @@ private fun WeatherInfo(currentWeatherModel: CurrentWeatherModel) {
                 contentDescription = null,
                 tint = White
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppTheme.dimens.medium))
             Text(
                 text = stringResource(
                     id = R.string.current_weather_wind_suffix,
@@ -343,8 +345,8 @@ private fun PreviewScreen() {
             iconId = null
         )
     )
-
-    WeatherAppTheme {
+    val window = rememberWindowSizeClass()
+    WeatherAppTheme(window) {
         CurrentWeatherScreen(
             locationPermissionState = LocationPermissionUiState(
                 wasGranted = true,

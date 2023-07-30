@@ -45,6 +45,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun WeatherAppTheme(
+    windowSizeClass: WindowSizeClass,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -68,9 +69,45 @@ fun WeatherAppTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    val orientation = when {
+        windowSizeClass.width.size > windowSizeClass.height.size -> Orientation.Landscape
+        else -> Orientation.Portrait
+    }
+
+    val sizeThatMatters = when (orientation) {
+        Orientation.Portrait -> windowSizeClass.width
+        else -> windowSizeClass.height
+    }
+
+    val dimensions = when (sizeThatMatters) {
+        is WindowSize.Small -> smallDimensions
+        is WindowSize.Compact -> compactDimensions
+        is WindowSize.Medium -> mediumDimensions
+        else -> largeDimensions
+    }
+
+    val typography = when (sizeThatMatters) {
+        is WindowSize.Small -> SmallTypography
+        is WindowSize.Compact -> CompactTypography
+        is WindowSize.Medium -> MediumTypography
+        else -> LargeTypography
+    }
+
+    ProvideAppUtils(dimensions = dimensions, orientation = orientation) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = typography,
+            content = content
+        )
+    }
+}
+
+object AppTheme {
+    val dimens: Dimensions
+        @Composable
+        get() = LocalAppDimens.current
+
+    val orientation: Orientation
+        @Composable
+        get() = LocalOrientationMode.current
 }

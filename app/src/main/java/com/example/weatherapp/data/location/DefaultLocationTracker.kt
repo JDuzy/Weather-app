@@ -42,7 +42,9 @@ class DefaultLocationTracker @Inject constructor(
                     return@suspendCancellableCoroutine
                 }
                 addOnSuccessListener {
-                    cont.resume(it.toLocationModel())
+                    it?.let { loc ->
+                        cont.resume(loc.toLocationModel())
+                    } ?: cont.resume(null)
                 }
                 addOnFailureListener {
                     cont.resume(null)
