@@ -24,7 +24,7 @@ class CurrentWeatherActivity : ComponentActivity() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.setLocationEnabled(true)
-            viewModel.getGpsLocationCurrentWeather()
+            viewModel.getActualLocationCurrentWeather()
         } else {
             viewModel.setLocationEnabled(false)
         }
@@ -52,13 +52,16 @@ class CurrentWeatherActivity : ComponentActivity() {
             locationRequestLauncher = locationRequestLauncher,
             onLocationRequestSuccessful = {
                 viewModel.setLocationEnabled(true)
-                viewModel.getGpsLocationCurrentWeather()
+                viewModel.getActualLocationCurrentWeather()
             }
         )
         setContent {
             val window = rememberWindowSizeClass()
             WeatherAppTheme(window) {
-                CurrentWeatherScreen(viewModel = viewModel, onRequestLocationPermission = ::requestLocationPermission)
+                CurrentWeatherScreen(
+                    viewModel = viewModel,
+                    onRequestLocationPermission = ::requestLocationPermission
+                )
             }
         }
     }

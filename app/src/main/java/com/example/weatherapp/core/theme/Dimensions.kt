@@ -1,7 +1,9 @@
 package com.example.weatherapp.core.theme
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 data class Dimensions(
     val lottieSize: Dp,
@@ -10,7 +12,8 @@ data class Dimensions(
     val mediumLarge: Dp,
     val large: Dp,
     val extraLarge: Dp,
-    val largeSpace: Dp
+    val largeSpace: Dp,
+    val mainTempTextSize: TextUnit
 )
 
 val smallDimensions = Dimensions(
@@ -20,7 +23,8 @@ val smallDimensions = Dimensions(
     mediumLarge = 12.dp,
     large = 16.dp,
     extraLarge = 20.dp,
-    largeSpace = 64.dp
+    largeSpace = 64.dp,
+    mainTempTextSize = 40.sp,
 )
 
 val compactDimensions = Dimensions(
@@ -30,7 +34,8 @@ val compactDimensions = Dimensions(
     mediumLarge = 12.dp,
     large = 16.dp,
     extraLarge = 20.dp,
-    largeSpace = 86.dp
+    largeSpace = 86.dp,
+    mainTempTextSize = 60.sp
 )
 
 val mediumDimensions = Dimensions(
@@ -40,7 +45,8 @@ val mediumDimensions = Dimensions(
     mediumLarge = 16.dp,
     large = 20.dp,
     extraLarge = 24.dp,
-    largeSpace = 100.dp
+    largeSpace = 100.dp,
+    mainTempTextSize = 80.sp
 )
 
 val largeDimensions = Dimensions(
@@ -50,5 +56,6 @@ val largeDimensions = Dimensions(
     mediumLarge = 20.dp,
     large = 24.dp,
     extraLarge = 48.dp,
-    largeSpace = 124.dp
+    largeSpace = 124.dp,
+    mainTempTextSize = 90.sp
 )
