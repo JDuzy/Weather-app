@@ -312,7 +312,6 @@ private fun CurrentWeatherSuccessContent(
             MainTemp(
                 currentWeatherModel = currentWeatherSate.currentWeatherModel
             )
-
             WeatherLottie(
                 currentWeatherSate.currentWeatherModel.iconId?.let {
                     it.toRawRes()

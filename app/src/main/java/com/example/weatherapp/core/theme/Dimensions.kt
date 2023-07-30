@@ -17,7 +17,7 @@ data class Dimensions(
 )
 
 val smallDimensions = Dimensions(
-    lottieSize = 160.dp,
+    lottieSize = 180.dp,
     small = 4.dp,
     medium = 8.dp,
     mediumLarge = 12.dp,
