@@ -87,7 +87,7 @@ class CurrentWeatherViewModel @Inject constructor(
             val locations = getWeatherMeasurableLocationsToShow().toMutableList()
 
             locations.remove(weatherMeasurableLocation)
-            locations.add(0, weatherMeasurableLocation) // TODO this logic to a usecase?
+            locations.add(0, weatherMeasurableLocation)
 
             _locationSelectorUiState.update {
                 it.copy(

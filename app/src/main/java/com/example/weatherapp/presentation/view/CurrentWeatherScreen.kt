@@ -85,29 +85,18 @@ private fun CurrentWeatherScreen(
     onExpandLocationSelector: () -> Unit = {},
     onSelectLocation: (WeatherMeasurableLocationModel) -> Unit = { _ -> }
 ) {
-    //if (AppTheme.orientation == Orientation.Portrait) {
-        PortraitCurrentWeatherLayout(
-            locationPermissionState = locationPermissionState,
-            currentWeatherSate = currentWeatherSate,
-            locationSelectorState = locationSelectorState,
-            onRequestLocationPermission = onRequestLocationPermission,
-            onExpandLocationSelector = onExpandLocationSelector,
-            onSelectLocation = onSelectLocation
-        )
-   /* } else {
-        LandscapeCurrentWeatherLayout(
-            locationPermissionState = locationPermissionState,
-            currentWeatherSate = currentWeatherSate,
-            locationSelectorState = locationSelectorState,
-            onRequestLocationPermission = onRequestLocationPermission,
-            onExpandLocationSelector = onExpandLocationSelector,
-            onSelectLocation = onSelectLocation
-        )
-    }*/
+    CurrentWeatherLayout(
+        locationPermissionState = locationPermissionState,
+        currentWeatherSate = currentWeatherSate,
+        locationSelectorState = locationSelectorState,
+        onRequestLocationPermission = onRequestLocationPermission,
+        onExpandLocationSelector = onExpandLocationSelector,
+        onSelectLocation = onSelectLocation
+    )
 }
 
 @Composable
-private fun PortraitCurrentWeatherLayout(
+private fun CurrentWeatherLayout(
     locationPermissionState: LocationPermissionUiState,
     currentWeatherSate: CurrentWeatherUiState,
     locationSelectorState: LocationSelectorUiState,
@@ -139,42 +128,6 @@ private fun PortraitCurrentWeatherLayout(
             onExpandLocationSelector = onExpandLocationSelector,
             onSelectLocation = onSelectLocation,
         )
-    }
-}
-
-@Composable
-private fun LandscapeCurrentWeatherLayout(
-    locationPermissionState: LocationPermissionUiState,
-    currentWeatherSate: CurrentWeatherUiState,
-    locationSelectorState: LocationSelectorUiState,
-    onRequestLocationPermission: () -> Unit = {},
-    onExpandLocationSelector: () -> Unit = {},
-    onSelectLocation: (WeatherMeasurableLocationModel) -> Unit = { _ -> }
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Black)
-            .padding(horizontal = AppTheme.dimens.mediumLarge),
-
-    ) {
-        LocationSelector(
-            modifier = Modifier
-                .padding(top = AppTheme.dimens.extraLarge),
-            locationSelectorState = locationSelectorState,
-            onExpandLocationSelector = onExpandLocationSelector,
-            onSelectLocation = onSelectLocation,
-        )
-        if (locationSelectorState.selectedLocation.isGPSLocation) {
-            GPSLocationContent(
-                locationPermissionState = locationPermissionState,
-                currentWeatherSate = currentWeatherSate,
-                onRequestLocationPermission = onRequestLocationPermission
-            )
-        } else {
-            CityLocationContent(currentWeatherSate)
-        }
     }
 }
 
@@ -269,6 +222,7 @@ private fun LoadingCurrentWeatherContent() {
         CircularProgressIndicator()
     }
 }
+
 @Composable
 private fun ErrorFetchingWeatherContent() {
     Column(
@@ -279,6 +233,7 @@ private fun ErrorFetchingWeatherContent() {
         ErrorDescription(stringId = R.string.current_weather_location_error_description)
     }
 }
+
 @Composable
 private fun CurrentWeatherSuccessContent(
     currentWeatherSate: CurrentWeatherUiState.Success,
@@ -330,7 +285,7 @@ fun WeatherLottie(@RawRes rawId: Int) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(rawId))
     LottieAnimation(
         modifier = Modifier.size(AppTheme.dimens.lottieSize),
-        composition =  composition,
+        composition = composition,
         contentScale = ContentScale.Fit
     )
 }
